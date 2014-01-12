@@ -12,24 +12,28 @@ output=open(r'E:\output.txt','w')
 C=False
 def MOS():
     if(SI==1):
-        READ(int(IR[2]+IR[3]))
+        READ()
     elif(SI==2):
-        WRITE(int(IR[2]+IR[3]))
+        WRITE()
     elif(SI==3):
         TERMINATE()
-def WRITE(block):
-    block=int(block/10)
-    for x in range(10*block,10*(block+1)):
+def WRITE():
+    global IR
+    IR[3]='0'
+    block=int(IR[2]+IR[3])
+    for x in range(block,block+10):
         for y in range(0,4):
+            print
             output.write(M[x][y])
     output.write('\n')
 def TERMINATE():
     output.write('\n\n')
     LOAD()
-def READ(block):
+def READ():
     global M
-    block=int(block/10)
-    block=block*10
+    global IR
+    block=int(IR[2]+IR[3])
+    IR[3]='0'
     datacard=inputfile.readline()
     if(datacard.endswith('\n')):
         datacard=datacard[0:len(datacard)-1]
@@ -46,9 +50,7 @@ def EXECUTEUSERPROGRAM():
     global IC
     global IR
     while(True):
-        print(IC)
         IR=deepcopy(M[IC])
-        print('IR='+str(IR))
         IC+=1
         if(IR[0]+IR[1]=='LR'):
             R=deepcopy(M[int(IR[2]+IR[3])])
@@ -89,10 +91,10 @@ def LOAD():
                 STARTEXECUTION()
             elif(inputfeed=='$END'):
                 output.close()
-                exit()
+                exit(0)
         else:
             if(pointer==100):
-                exit()
+                exit(0)
             else:
                 for count in range(len(inputfeed),40):
                     inputfeed+=' '
@@ -100,7 +102,6 @@ def LOAD():
                 for count in range(0,10):
                     M[pointer]=deepcopy(inputfeed[4*count:4*count+4])
                     pointer+=1
-                print(M)
         inputfeed=inputfile.readline()
 LOAD()
 inputfile.close()
