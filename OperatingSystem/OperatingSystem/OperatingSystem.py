@@ -1,7 +1,7 @@
 from copy import deepcopy
 SI=3
 R=[' ',' ',' ',' ']
-IC=0
+IC=[' ',' ']
 IR=[' ',' ',' ',' ']
 M=[]
 M.append(deepcopy(R))
@@ -50,8 +50,15 @@ def EXECUTEUSERPROGRAM():
     global IC
     global IR
     while(True):
+        print(IC)
+        IC=int(IC[0]+IC[1])
         IR=deepcopy(M[IC])
         IC+=1
+        if(IC<10):
+            IC='0'+str(IC)
+        else:
+            IC=str(IC)
+        IC=list(IC)
         if(IR[0]+IR[1]=='LR'):
             R=deepcopy(M[int(IR[2]+IR[3])])
         elif(IR[0]+IR[1]=='SR'):
@@ -64,6 +71,8 @@ def EXECUTEUSERPROGRAM():
         elif(IR[0]+IR[1]=='BT'):
             if(C):
                 IC=int(IR[2]+IR[3])
+                IC=str(IC)
+                IC=list(IC)
         elif(IR[0]+IR[1]=='GD'):
             global SI
             SI=1
@@ -76,7 +85,7 @@ def EXECUTEUSERPROGRAM():
             MOS()
 def STARTEXECUTION():
     global IC
-    IC=0
+    IC=['0','0']
     EXECUTEUSERPROGRAM()
 def LOAD():
     pointer=0
