@@ -93,7 +93,7 @@ def LOAD():
         if(inputfeed.endswith('\n')):
             inputfeed=inputfeed[0:len(inputfeed)-1]
         if(inputfeed.startswith("$AMJ") or inputfeed.startswith("$DTA") or inputfeed.startswith("$END")):
-            if(inputfeed=='$AMJ'):
+            if(inputfeed=='$AMJ' or inputfeed=='$END'):
                 pass
             if(inputfeed=='$DTA'):
                 STARTEXECUTION()
