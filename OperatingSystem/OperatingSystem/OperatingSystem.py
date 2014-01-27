@@ -7,7 +7,7 @@ M=[]
 M.append(deepcopy(R))
 for a in range(0,100):
     M.append(deepcopy(R))
-inputfile=open(r'E:\input.txt','r')
+inputfile=open(r'E:\osinputm.txt','r')
 output=open(r'E:\output.txt','w')
 C=False
 def MOS():
@@ -23,7 +23,6 @@ def WRITE():
     block=int(IR[2]+IR[3])
     for x in range(block,block+10):
         for y in range(0,4):
-            print
             output.write(M[x][y])
     output.write('\n')
 def TERMINATE():
@@ -32,14 +31,15 @@ def TERMINATE():
 def READ():
     global M
     global IR
-    block=int(IR[2]+IR[3])
     IR[3]='0'
+    block=int(IR[2]+IR[3])
     datacard=inputfile.readline()
     if(datacard.endswith('\n')):
         datacard=datacard[0:len(datacard)-1]
-    if(datacard=='$END'):
+    if(datacard.startswith('$END')):
         TERMINATE()
     else:
+        ini=deepcopy(datacard)
         for count in range(len(datacard),40):
             datacard+=' '
         datacard=list(datacard)
@@ -49,6 +49,7 @@ def READ():
 def EXECUTEUSERPROGRAM():
     global IC
     global IR
+    global M
     while(True):
         IC=int(IC[0]+IC[1])
         IR=deepcopy(M[IC])
@@ -70,7 +71,10 @@ def EXECUTEUSERPROGRAM():
         elif(IR[0]+IR[1]=='BT'):
             if(C):
                 IC=int(IR[2]+IR[3])
-                IC=str(IC)
+                if(IC<10):
+                    IC='0'+str(IC)
+                else:
+                    IC=str(IC)
                 IC=list(IC)
         elif(IR[0]+IR[1]=='GD'):
             global SI
@@ -87,13 +91,19 @@ def STARTEXECUTION():
     IC=['0','0']
     EXECUTEUSERPROGRAM()
 def LOAD():
+    global M
+    M=[]
+    for a in range(0,100):
+        M.append(['','','',''])
     pointer=0
     inputfeed=inputfile.readline()
     while(inputfeed):
         if(inputfeed.endswith('\n')):
             inputfeed=inputfeed[0:len(inputfeed)-1]
         if(inputfeed.startswith("$AMJ") or inputfeed.startswith("$DTA") or inputfeed.startswith("$END")):
-            if(inputfeed=='$AMJ' or inputfeed=='$END'):
+            if(inputfeed.startswith("$AMJ")):
+                pointer=0
+            if(inputfeed.startswith("$END")):
                 pass
             if(inputfeed=='$DTA'):
                 STARTEXECUTION()
