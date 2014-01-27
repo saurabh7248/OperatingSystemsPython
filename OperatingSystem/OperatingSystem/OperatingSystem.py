@@ -39,7 +39,6 @@ def READ():
     if(datacard.startswith('$END')):
         TERMINATE()
     else:
-        ini=deepcopy(datacard)
         for count in range(len(datacard),40):
             datacard+=' '
         datacard=list(datacard)
